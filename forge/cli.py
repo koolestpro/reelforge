@@ -12,6 +12,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[1]
 HERE = Path(__file__).resolve().parent
+VERSION = (BASE / "VERSION").read_text().strip() if (BASE / "VERSION").is_file() else "0.0.0"
 sys.path.insert(0, str(HERE))
 
 PLUGIN = BASE / "plugins" / "islamic"
@@ -80,6 +81,8 @@ def cmd_render(profile, clip_id=None):
 def cmd_transcribe(profile, provider=None):
     _job_path, job, _clips, _profile, _style = cfg.build_job(profile)
     config_path = BASE / "config" / "asr.json"
+    if not config_path.is_file():
+        config_path = BASE / "config" / "asr.example.json"
     config = json.loads(config_path.read_text()) if config_path.is_file() else {}
     engines = provider or ",".join(config.get("provider_order", ["elevenlabs", "9jalingo", "groq"]))
     out = Path(job["workdir"]) / "transcript.raw.json"
@@ -90,6 +93,54 @@ def cmd_transcribe(profile, provider=None):
         check=True,
     )
     print(f"transcript: {out}")
+    return 0
+
+
+def cmd_version():
+    print(f"reelforge {VERSION}")
+    return 0
+
+
+def cmd_update():
+    if not (BASE / ".git").is_dir():
+        print("No git checkout here. Download the latest release from")
+        print("https://github.com/koolestpro/reelforge/releases")
+        return 0
+
+    def git(*args, check=True):
+        return subprocess.run(
+            ["git", "-C", str(BASE), *args], capture_output=True, text=True, check=check
+        )
+
+    status = git("status", "--porcelain", check=False)
+    if status.returncode != 0:
+        raise cfg.ConfigError(f"git status failed: {status.stderr.strip()}")
+    if status.stdout.strip():
+        print("Uncommitted changes found. Commit or stash them first:", file=sys.stderr)
+        print(status.stdout.strip(), file=sys.stderr)
+        return 1
+
+    remotes = git("remote", check=False).stdout.split()
+    remote = "upstream" if "upstream" in remotes else "origin"
+    if remote not in remotes:
+        raise cfg.ConfigError("no git remote found; download the latest release instead")
+
+    before = git("describe", "--tags", "--abbrev=0", check=False).stdout.strip() or "untagged"
+    print(f"updating from {remote} (currently {before})")
+    git("fetch", remote, "--tags")
+
+    merge = git("merge", "--ff-only", f"{remote}/main", check=False)
+    if merge.returncode != 0:
+        print("Fast-forward failed. You have local commits or diverged history.", file=sys.stderr)
+        print((merge.stdout + merge.stderr).strip(), file=sys.stderr)
+        return 1
+
+    subprocess.run(
+        [sys.executable, "-m", "pip", "install", "--quiet", "-r", str(BASE / "requirements.txt")],
+        check=True,
+    )
+    after = git("describe", "--tags", "--abbrev=0", check=False).stdout.strip() or "untagged"
+    print(f"updated: {before} -> {after}")
     return 0
 
 
@@ -117,6 +168,7 @@ def cmd_demo():
 
 def main():
     parser = argparse.ArgumentParser(prog="forge")
+    parser.add_argument("--version", action="version", version=f"reelforge {VERSION}")
     sub = parser.add_subparsers(dest="command", required=True)
 
     init = sub.add_parser("init", help="create a profile from the template")
@@ -134,6 +186,8 @@ def main():
     transcribe.add_argument("--provider", default="")
 
     sub.add_parser("demo", help="synthetic end to end run")
+    sub.add_parser("update", help="pull the latest release into this checkout")
+    sub.add_parser("version", help="print the version")
 
     args = parser.parse_args()
     try:
@@ -147,6 +201,10 @@ def main():
             return cmd_transcribe(args.profile, args.provider or None)
         if args.command == "demo":
             return cmd_demo()
+        if args.command == "update":
+            return cmd_update()
+        if args.command == "version":
+            return cmd_version()
         parser.error("unknown command")
     except cfg.ConfigError as error:
         print(f"error: {error}", file=sys.stderr)

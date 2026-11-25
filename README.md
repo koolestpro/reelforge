@@ -2,7 +2,7 @@
 
 Turn one long video into short vertical clips with clean captions, thumbnails and a manifest.
 
-This is a template. It carries no brand, no logo, no bundled music and no account connections.
+This is a reusable workflow. It carries no brand, no logo, no bundled music and no account connections.
 You supply the footage, the profile and the clip ranges.
 
 ## Requirements
@@ -58,6 +58,17 @@ Nothing is uploaded. No account is connected. No API key is needed to render.
 One clone can hold several profiles, one per person or channel. Each profile has its own logo,
 palette, fonts, clip list and output folder. They do not read each other's files.
 
+## Updates
+
+The canonical copy is https://github.com/koolestpro/reelforge. Clone or fork it, not a ZIP, if you
+want updates.
+
+```
+./forge.sh update
+```
+
+Your profiles, media, work folders and keys survive an update. See `docs/updates.md`.
+
 ## What it does not do
 
 - It does not choose what to cut. You supply the ranges.
@@ -67,4 +78,5 @@ palette, fonts, clip list and output folder. They do not read each other's files
 
 ## Licence
 
-MIT. See `LICENSE` and `THIRD_PARTY.md`.
+FSL-1.1-MIT. Free to use, copy, modify and share for any purpose except selling it or offering it as
+a competing product. Each release becomes MIT two years after it is published. Read `LICENSE`.

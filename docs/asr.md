@@ -2,9 +2,10 @@
 
 Transcription is optional. Rendering works without it.
 
-## Providers
+## Provider order
 
-`config/asr.json` sets the order. The first provider with a key and a successful response wins.
+Copy `config/asr.example.json` to `config/asr.json` and edit the order. `config/asr.json` is
+gitignored, so an update never overwrites it. If the file is absent, the example is used.
 
 | Provider | Model | Notes |
 | --- | --- | --- |

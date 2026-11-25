@@ -2,6 +2,10 @@
 __pycache__/
 *.pyc
 .env
+profiles/*
+!profiles/_template/
+!profiles/_template/**
+config/asr.json
 inbox/*
 !inbox/.gitkeep
 work/*

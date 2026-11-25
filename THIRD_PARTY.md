@@ -12,4 +12,6 @@ No media, fonts or models are bundled. Install or supply your own.
 | Amiri | SIL Open Font License 1.1 | Optional, for Arabic titles |
 | ElevenLabs, Groq, DeepInfra, 9jaLingo | Vendor terms | Only used by `transcribe`, with the user's own key |
 
+Project licence: FSL-1.1-MIT. See `LICENSE`.
+
 Sound effects are generated locally with ffmpeg on first render. No music is included.

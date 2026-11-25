@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "forge"))
 
 import config  # noqa: E402
+import cli  # noqa: E402
+
+
+class VersionTests(unittest.TestCase):
+    def test_version_is_set(self):
+        self.assertRegex(cli.VERSION, r"^\d+\.\d+\.\d+$")
 
 
 class AspectTests(unittest.TestCase):
