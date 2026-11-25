@@ -6,6 +6,7 @@ profiles/*
 !profiles/_template/
 !profiles/_template/**
 config/asr.json
+forge/models/
 inbox/*
 !inbox/.gitkeep
 work/*

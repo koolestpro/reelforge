@@ -101,7 +101,19 @@ Or one clip:
 
 ## 10. Captions
 
-Put a reviewed source-time SRT at `profiles/ahmed/captions.srt`, then:
+If you need a transcript first, copy the key file and fill one provider:
+
+```
+cp env.example .env
+# edit .env, for example ELEVENLABS_API_KEY=...
+./forge.sh keys
+./forge.sh transcribe --profile ahmed
+```
+
+`./forge.sh keys` shows which keys are set and never prints a value. Keys are yours alone. Do not
+share them with the person who set this up for you.
+
+Put the reviewed source-time SRT at `profiles/ahmed/captions.srt`, then:
 
 ```
 ./forge.sh captions --profile ahmed

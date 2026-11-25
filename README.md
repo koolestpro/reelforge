@@ -60,6 +60,7 @@ Nothing is uploaded. No account is connected. No API key is needed to render.
 | `./forge.sh render --profile NAME --id c1` | Render one clip |
 | `./forge.sh captions --profile NAME` | Burn reviewed captions into delivered clips |
 | `./forge.sh transcribe --profile NAME` | Transcribe with your own key |
+| `./forge.sh keys` | Show which keys are set, never their values |
 | `./forge.sh demo` | Synthetic end to end run, no footage or key |
 
 ## Profiles

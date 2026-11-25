@@ -24,7 +24,19 @@ Put keys in `.env` at the repo root. The engine reads only that file. Never comm
 ELEVENLABS_API_KEY=
 GROQ_API_KEY=
 DEEPINFRA_API_KEY=
+NAIJALINGO_API_KEY=
+SPEECHYOU_API_KEY=
+HF_TOKEN=
+CLOUDINARY_URL=
 ```
+
+Check what is set without printing a value:
+
+```
+./forge.sh keys
+```
+
+Only `./forge.sh transcribe` needs a key. Render, captions and demo work with no key at all.
 
 ## Cost
 

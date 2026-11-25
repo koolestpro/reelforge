@@ -102,6 +102,40 @@ def cmd_captions(profile, clip_id=None, srt=None):
     return captions.run(profile, srt, clip_id)
 
 
+KEY_NAMES = (
+    "ELEVENLABS_API_KEY",
+    "GROQ_API_KEY",
+    "DEEPINFRA_API_KEY",
+    "NAIJALINGO_API_KEY",
+    "SPEECHYOU_API_KEY",
+    "HF_TOKEN",
+    "CLOUDINARY_URL",
+)
+
+
+def read_env_file(path=None):
+    values = {}
+    path = Path(path) if path else BASE / ".env"
+    if not path.is_file():
+        return values
+    for line in path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        name, value = line.split("=", 1)
+        values[name.strip()] = value.strip().strip('"').strip("'")
+    return values
+
+
+def cmd_keys():
+    env = read_env_file()
+    for name in KEY_NAMES:
+        value = os.environ.get(name) or env.get(name)
+        print(f"{name}: {'set' if value else 'missing'}")
+    print("Values are never printed. See env.example for what each key is for.")
+    return 0
+
+
 def cmd_version():
     print(f"reelforge {VERSION}")
     return 0
@@ -199,6 +233,7 @@ def main():
     sub.add_parser("demo", help="synthetic end to end run")
     sub.add_parser("update", help="pull the latest release into this checkout")
     sub.add_parser("version", help="print the version")
+    sub.add_parser("keys", help="show which keys are set, never their values")
 
     args = parser.parse_args()
     try:
@@ -218,6 +253,8 @@ def main():
             return cmd_update()
         if args.command == "version":
             return cmd_version()
+        if args.command == "keys":
+            return cmd_keys()
         parser.error("unknown command")
     except cfg.ConfigError as error:
         print(f"error: {error}", file=sys.stderr)

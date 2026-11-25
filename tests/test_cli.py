@@ -13,6 +13,19 @@ import config  # noqa: E402
 import cli  # noqa: E402
 
 
+class KeyTests(unittest.TestCase):
+    def test_env_file_parsing_keeps_blank_and_quoted_values(self):
+        import tempfile
+
+        handle = tempfile.NamedTemporaryFile("w", suffix=".env", delete=False)
+        handle.write("# comment\nELEVENLABS_API_KEY='abc'\nGROQ_API_KEY=\n")
+        handle.close()
+        self.addCleanup(Path(handle.name).unlink)
+        values = cli.read_env_file(handle.name)
+        self.assertEqual(values["ELEVENLABS_API_KEY"], "abc")
+        self.assertEqual(values["GROQ_API_KEY"], "")
+
+
 class VersionTests(unittest.TestCase):
     def test_version_is_set(self):
         self.assertRegex(cli.VERSION, r"^\d+\.\d+\.\d+$")
