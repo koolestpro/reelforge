@@ -42,6 +42,11 @@ edits into a new folder under `profiles/`, which is already ignored.
 On GitHub, click **Watch**, then **Custom**, then tick **Releases**. You will only be notified when
 a new version is tagged.
 
+## ZIP users
+
+A ZIP has no git history, so `./forge.sh update` cannot run. Download the new release and follow
+`docs/zip.md`. Your profiles, captions, media and keys are copied across by hand.
+
 ## Roll back
 
 Every release is a tag. To return to one:

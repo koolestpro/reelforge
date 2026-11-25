@@ -23,6 +23,19 @@ fi
 ./.venv/bin/python -m pip install --quiet --upgrade pip
 ./.venv/bin/python -m pip install --quiet -r requirements.txt
 
+if ! ./.venv/bin/python -c "import sys; sys.path.insert(0, 'forge'); import overlays; overlays.inter('Bold')" >/dev/null 2>&1; then
+  echo "warning: Inter did not load. Titles will fall back to a system font." >&2
+fi
+
+if [ ! -f forge/models/face_detection_yunet_2023mar.onnx ]; then
+  mkdir -p forge/models
+  if command -v curl >/dev/null 2>&1; then
+    curl -fsSL -o forge/models/face_detection_yunet_2023mar.onnx \
+      https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx \
+      || echo "warning: optional face detector not downloaded. Exact-aspect sources still render." >&2
+  fi
+fi
+
 chmod +x forge.sh setup.sh 2>/dev/null || true
 mkdir -p inbox work deliver
 

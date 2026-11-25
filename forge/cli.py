@@ -96,6 +96,12 @@ def cmd_transcribe(profile, provider=None):
     return 0
 
 
+def cmd_captions(profile, clip_id=None, srt=None):
+    import captions
+
+    return captions.run(profile, srt, clip_id)
+
+
 def cmd_version():
     print(f"reelforge {VERSION}")
     return 0
@@ -185,6 +191,11 @@ def main():
     transcribe.add_argument("--profile", required=True)
     transcribe.add_argument("--provider", default="")
 
+    captions = sub.add_parser("captions", help="burn reviewed captions into delivered clips")
+    captions.add_argument("--profile", required=True)
+    captions.add_argument("--srt", default=None)
+    captions.add_argument("--id", default=None)
+
     sub.add_parser("demo", help="synthetic end to end run")
     sub.add_parser("update", help="pull the latest release into this checkout")
     sub.add_parser("version", help="print the version")
@@ -199,6 +210,8 @@ def main():
             return cmd_render(args.profile, args.id or None)
         if args.command == "transcribe":
             return cmd_transcribe(args.profile, args.provider or None)
+        if args.command == "captions":
+            return cmd_captions(args.profile, args.id or None, args.srt)
         if args.command == "demo":
             return cmd_demo()
         if args.command == "update":

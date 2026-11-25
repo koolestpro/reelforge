@@ -9,7 +9,14 @@ You supply the footage, the profile and the clip ranges.
 
 - Python 3.10 or newer
 - ffmpeg and ffprobe on PATH
-- A font: Inter is recommended. Amiri is only needed for Arabic titles.
+- Inter is bundled. Amiri is only needed for Arabic titles.
+
+## Start here
+
+- `docs/getting-started.md` for the full first-run sequence
+- `docs/captions.md` for reviewed captions
+- `docs/zip.md` if you use a ZIP instead of git
+- `docs/updates.md` for updates
 
 ## Setup
 
@@ -36,6 +43,7 @@ Output lands in `deliver/my-studio/<date>/`:
 
 ```
 clips/        one mp4 and one jpg per clip
+captions/     sidecar srt after the captions step
 manifest.json profile, ranges, files, hashes
 queue.csv     id, title, file, thumbnail, caption
 ```
@@ -50,6 +58,7 @@ Nothing is uploaded. No account is connected. No API key is needed to render.
 | `./forge.sh check --profile NAME` | Validate profile, clips, source and tools |
 | `./forge.sh render --profile NAME` | Render every clip |
 | `./forge.sh render --profile NAME --id c1` | Render one clip |
+| `./forge.sh captions --profile NAME` | Burn reviewed captions into delivered clips |
 | `./forge.sh transcribe --profile NAME` | Transcribe with your own key |
 | `./forge.sh demo` | Synthetic end to end run, no footage or key |
 
