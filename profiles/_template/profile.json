@@ -1,0 +1,11 @@
+{
+  "studio": "",
+  "series": "",
+  "source": "",
+  "logo": null,
+  "watermark": false,
+  "fonts": {"display": null, "body": null},
+  "palette": {"bg": "#111111", "fg": "#FFFFFF", "muted": "#A0A0A0", "accent": "#D2D2D2"},
+  "output": {"aspect": "9:16", "speed": 1.0, "crf": 20},
+  "naming": "{date}_{id}_{slug}_{aspect}"
+}

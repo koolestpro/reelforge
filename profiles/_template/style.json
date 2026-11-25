@@ -1,0 +1,7 @@
+{
+  "thumb_first": {"hold": 0.35, "fade": 0.45},
+  "zoom": 1.0,
+  "teaser_max_seconds": 10,
+  "title": {"fade_in": 1.5, "position": "bottom-left"},
+  "captions": {"mode": "burn-in", "max_lines": 2}
+}

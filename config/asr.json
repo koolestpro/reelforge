@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "provider_order": ["elevenlabs", "9jalingo", "groq"],
+  "elevenlabs": {"model": "scribe_v2"},
+  "language": "auto",
+  "keep_raw_parts": true
+}
